@@ -104,6 +104,9 @@
         <service id="form.type.locale" class="Symfony\Component\Form\Extension\Core\Type\LocaleType">
             <tag name="form.type" alias="locale" />
         </service>
+        <service id="form.type.mapped_collection" class="Symfony\Component\Form\Extension\Core\Type\MappedCollectionType">
+            <tag name="form.type" alias="mapped_collection" />
+        </service>
         <service id="form.type.money" class="Symfony\Component\Form\Extension\Core\Type\MoneyType">
             <tag name="form.type" alias="money" />
         </service>

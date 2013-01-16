@@ -38,6 +38,7 @@ class CoreExtension extends AbstractExtension
             new Type\IntegerType(),
             new Type\LanguageType(),
             new Type\LocaleType(),
+            new Type\MappedCollectionType(),
             new Type\MoneyType(),
             new Type\NumberType(),
             new Type\PasswordType(),
