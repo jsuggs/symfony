@@ -599,6 +599,19 @@ class FormConfigBuilder implements FormConfigBuilderInterface
         return $this->data;
     }
 
+    public function setDataClass($dataClass)
+    {
+        if ($this->locked) {
+            //throw new BadMethodCallException('FormConfigBuilder methods cannot be accessed anymore once the builder is turned into a FormConfigInterface instance.');
+        }
+
+        if (null !== $dataClass && !class_exists($dataClass)) {
+            throw new \InvalidArgumentException(sprintf('The data class "%s" is not a valid class.', $dataClass));
+        }
+
+        $this->dataClass = $dataClass;
+    }
+
     /**
      * {@inheritdoc}
      */

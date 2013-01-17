@@ -267,9 +267,18 @@ class MappedCollectionTypeTest extends TypeTestCase
 
         $form = $this->factory->create('mapped_collection', array($bar), array(
             'map' => array(
-                'bar' => new BarType(),
-                'baz' => new BazType(),
-                'qux' => new QuxType(),
+                'bar' => array(
+                    'form_type' => new BarType(),
+                    'data_class' => __NAMESPACE__ . '\Bar',
+                ),
+                'baz' => array(
+                    'form_type' => new BazType(),
+                    'data_class' => __NAMESPACE__ . '\Bar',
+                ),
+                'qux' => array(
+                    'form_type' => new QuxType(),
+                    'data_class' => __NAMESPACE__ . '\Bar',
+                ),
             ),
             'allow_add' => true,
             'allow_delete' => true,
@@ -280,9 +289,9 @@ class MappedCollectionTypeTest extends TypeTestCase
         $this->assertTrue($form->has(0));
         $this->assertSame($bar, $form[0]->getData());
 
-        $baz = new Baz();
+        $baz = new Baz('baz');
         $form->bind(array($baz->toArray()));
-        $this->assertSame($baz, $form[0]->getData());
+        $this->assertEquals($baz, $form[0]->getData());
 
         $qux = new Qux();
         $form->setData(array($qux->toArray()));

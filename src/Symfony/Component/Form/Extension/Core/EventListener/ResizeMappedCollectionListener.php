@@ -114,9 +114,9 @@ class ResizeMappedCollectionListener implements EventSubscriberInterface
                 throw new UnmappedTypeException($type, $this->map);
             }
 
-            // TODO - Should we set the data_class here?
-            $form->add($name, $this->map[$type], array_replace(array(
+            $form->add($name, $this->map[$type]['form_type'], array_replace(array(
                 'property_path' => '['.$name.']',
+                'data_class' => $this->map[$type]['data_class'],
             ), $this->options));
         }
     }
@@ -158,15 +158,12 @@ class ResizeMappedCollectionListener implements EventSubscriberInterface
                 throw new UnmappedTypeException($type, $this->map);
             }
 
-            $builder = $this->factory->createNamedBuilder($name, $this->map[$type], null, array_replace(array(
+            $builder = $this->factory->createNamedBuilder($name, $this->map[$type]['form_type'], null, array_replace(array(
                 'property_path' => '['.$name.']',
+                'data_class' => $this->map[$type]['data_class'],
             ), $this->options));
 
             if ($form->has($name)) {
-                $form->add($name, $this->map[$type], array_replace(array(
-                    'property_path' => '['.$name.']',
-                ), $this->options));
-
                 // Check to see if the form existed but the type has changed
                 if ($this->getDiscriminatorValue($form[$name]->getData()) !== $type) {
                     //die('TODO - type changed');
@@ -174,12 +171,18 @@ class ResizeMappedCollectionListener implements EventSubscriberInterface
                     $formData = $form->getData();
                     $emptyData = $builder->getEmptyData();
                     $this->setPropertyValue($formData, $name, $emptyData);
-                    $form->setData($formData);
+                    $form->setData($emptyData);
                 }
 
-            } elseif ($this->allowAdd) {
-                $form->add($name, $this->map[$type], array_replace(array(
+                $form->add($name, $this->map[$type]['form_type'], array_replace(array(
                     'property_path' => '['.$name.']',
+                    'data_class' => $this->map[$type]['data_class'],
+                ), $this->options));
+
+            } elseif ($this->allowAdd) {
+                $form->add($name, $this->map[$type]['form_type'], array_replace(array(
+                    'property_path' => '['.$name.']',
+                    'data_class' => $this->map[$type]['data_class'],
                 ), $this->options));
             }
         }
